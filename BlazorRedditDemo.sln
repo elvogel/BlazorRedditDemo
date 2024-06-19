@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorRedditDemo", "BlazorRedditDemo\BlazorRedditDemo.csproj", "{38677763-B901-47AB-9BAD-9FAE07B0E241}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BRD.Common", "BRD.Common\BRD.Common.csproj", "{FA8E5FEB-F9EF-45AC-AA46-6716736CC9E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BRD.Services", "BRD.Services\BRD.Services.csproj", "{476EE185-959B-4468-B9BF-B2305B592BAF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{38677763-B901-47AB-9BAD-9FAE07B0E241}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38677763-B901-47AB-9BAD-9FAE07B0E241}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38677763-B901-47AB-9BAD-9FAE07B0E241}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38677763-B901-47AB-9BAD-9FAE07B0E241}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA8E5FEB-F9EF-45AC-AA46-6716736CC9E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA8E5FEB-F9EF-45AC-AA46-6716736CC9E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA8E5FEB-F9EF-45AC-AA46-6716736CC9E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA8E5FEB-F9EF-45AC-AA46-6716736CC9E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{476EE185-959B-4468-B9BF-B2305B592BAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{476EE185-959B-4468-B9BF-B2305B592BAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{476EE185-959B-4468-B9BF-B2305B592BAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{476EE185-959B-4468-B9BF-B2305B592BAF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
