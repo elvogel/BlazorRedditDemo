@@ -24,6 +24,8 @@ public partial class Home
         {
             hubConnection = new HubConnectionBuilder()
                 .WithUrl(Navigation.ToAbsoluteUri("/reddithub"))
+                .WithKeepAliveInterval(TimeSpan.FromMilliseconds(500))
+                .WithStatefulReconnect()
                 .Build();
 
             hubConnection.On<RedditStats>("ReceiveMessage", (message) =>
