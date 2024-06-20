@@ -1,7 +1,74 @@
 ﻿@page "/"
+@using BRD.Common.Models
+@rendermode InteractiveServer
+<PageTitle>Blazor Reddit Demo | Lucas Vogel</PageTitle>
 
-<PageTitle>Home</PageTitle>
+<h1>Reddit Posts and Authors for /r/funny</h1>
 
-<h1>Hello, world!</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Posts</h3>
+            <!-- Content of the first column goes here -->
+            <SfListBox TValue="string[]" DataSource="posts" TItem="ListBoxItem">
+                <ListBoxFieldSettings Text="Title"></ListBoxFieldSettings>
+                <ListBoxTemplates TItem="ListBoxItem">
+                    <ItemTemplate>
+                        <div class="list-wrapper">
+                            <span class="text"><b>@context.Title</b></span>
+                            <span class="text">@context.Count.ToString("N0") views</span>
+                        </div>
+                    </ItemTemplate>
+                </ListBoxTemplates>
+            </SfListBox>
+        </div>
+        <div class="col-md-6">
+            <h3>Users</h3>
+            <SfListBox TValue="string[]" DataSource="users" TItem="ListBoxItem">
+                <ListBoxFieldSettings Text="Title"></ListBoxFieldSettings>
+                <ListBoxTemplates TItem="ListBoxItem">
+                    <ItemTemplate>
+                        <div class="list-wrapper">
+                            <span class="text"><b>@context.Title</b></span>
+                            <span class="text">@context.Count.ToString("N0") posts</span>
+                        </div>
+                    </ItemTemplate>
+                </ListBoxTemplates>
+            </SfListBox>
+        </div>
+    </div>
+</div>
+<style>
+    .e-listbox-container {
+        margin: auto;
+        max-width: 400px;
+        box-sizing: border-box;
+    }
 
-Welcome to your new app.
+    .list-wrapper {
+        height: inherit;
+        position: relative;
+        padding: 14px 12px 14px 78px;
+    }
+
+    .list-wrapper .text,
+    .list-wrapper .description {
+        display: block;
+        margin: 0;
+        padding-bottom: 3px;
+        white-space: normal;
+    }
+
+    .list-wrapper .description {
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .e-listbox-container .list-wrapper .text {
+        font-weight: bold;
+        font-size: 13px;
+    }
+    .e-listbox-container .e-list-item {
+        height: auto !important;
+    }
+</style>

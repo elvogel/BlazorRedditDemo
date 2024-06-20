@@ -1,15 +1,24 @@
 using BlazorRedditDemo.Components;
+using BlazorRedditDemo.Hubs;
+using BRD.Services.Handlers;
+using Microsoft.AspNetCore.ResponseCompression;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
+using Syncfusion.Blazor;
 using ILogger = Serilog.ILogger;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//configureConfig();
+configureLogging();
+configureServices();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 var app = builder.Build();
+app.UseResponseCompression();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -26,12 +35,41 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
-
+app.MapHub<RedditHub>("/reddithub");
 app.Run();
+
+void configureConfig()
+{
+
+    var connectionString =  builder.Configuration.GetConnectionString("AppConfig");
+    builder.Configuration.AddAzureAppConfiguration(config =>
+    {
+        //https://learn.microsoft.com/en-us/azure/azure-app-configuration/howto-labels-aspnet-core#load-configuration-values-with-a-specified-label
+
+        config.UseFeatureFlags();
+
+        /*
+        if (!builder.Environment.IsProduction())
+        {
+            config.UseFeatureFlags(s => s.Label = "dev");
+        }
+        else if (builder.Environment.IsStaging())
+        {
+            config.UseFeatureFlags(s => s.Label = "stag");
+        }
+        else
+        {
+            config.UseFeatureFlags(s => s.Label = "prd");
+        }
+        */
+        config.Connect(connectionString);
+    });
+
+}
 
 void configureLogging()
 {
-ILogger logger = new LoggerConfiguration()
+    ILogger logger = new LoggerConfiguration()
         .Enrich.FromLogContext()
         .MinimumLevel.Debug()
         .MinimumLevel.Override("Azure.Core",LogEventLevel.Error)
@@ -64,9 +102,24 @@ ILogger logger = new LoggerConfiguration()
 
 void configureServices()
 {
+    /*
     builder.Services.AddAutoMapper(typeof(BRD.Common.Mapping.MappingProfile));
     builder.Services.AddMediatR(config =>
     {
-        config.RegisterServicesFromAssembly(typeof(GetProRequest).Assembly);
+        //config.RegisterServicesFromAssembly(typeof(GetProRequest).Assembly);
+    });
+    */
+
+    Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(Environment.GetEnvironmentVariable("SyncfusionKey"));
+    builder.Services.AddSyncfusionBlazor();
+    builder.Services.AddMemoryCache();
+    builder.Services.AddSignalR();
+
+    builder.Services.AddScoped<RedditHandler>();
+    builder.Services.AddHttpClient("Reddit").AddHttpMessageHandler<RedditHandler>();
+    builder.Services.AddResponseCompression(opts =>
+    {
+        opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+            ["application/octet-stream"]);
     });
 }
