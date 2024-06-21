@@ -1,6 +1,5 @@
 ﻿using BRD.Common;
 using Newtonsoft.Json;
-using System.Linq;
 
 // See https://aka.ms/new-console-template for more information
 

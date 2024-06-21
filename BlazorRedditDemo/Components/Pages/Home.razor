@@ -1,56 +1,68 @@
 ﻿@page "/"
 @using BRD.Common.Models
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 <PageTitle>Blazor Reddit Demo | Lucas Vogel</PageTitle>
 
-<h1>Reddit Posts and Authors for /r/funny</h1>
+<h1>Reddit Posts and Authors for /r/worldnews</h1>
 
 <div class="container">
+    <SfSpinner @bind-Visible="showSpin" Label="Refreshing..." Type="SpinnerType.Bootstrap"></SfSpinner>
     <div class="row">
         <div class="col-md-6">
             <h3>Posts</h3>
             <!-- Content of the first column goes here -->
-            <SfListBox TValue="string[]" DataSource="posts" TItem="ListBoxItem">
-                <ListBoxFieldSettings Text="Title"></ListBoxFieldSettings>
-                <ListBoxTemplates TItem="ListBoxItem">
-                    <ItemTemplate>
-                        <div class="list-wrapper">
-                            <span class="text"><b>@context.Title</b></span>
-                            <span class="text">@context.Count.ToString("N0") views</span>
+            <SfListView DataSource="posts" Width="100%">
+                <ListViewFieldSettings TValue="ListItem" Id="Title" Text="Title"></ListViewFieldSettings>
+                <ListViewTemplates TValue="ListItem">
+                    <Template>
+                        <div class="e-list-wrapper e-list-multiline">
+                            <span class="e-list-content">@context.Title</span>
                         </div>
-                    </ItemTemplate>
-                </ListBoxTemplates>
-            </SfListBox>
+                    </Template>
+                </ListViewTemplates>
+            </SfListView>
         </div>
         <div class="col-md-6">
             <h3>Users</h3>
-            <SfListBox TValue="string[]" DataSource="users" TItem="ListBoxItem">
-                <ListBoxFieldSettings Text="Title"></ListBoxFieldSettings>
-                <ListBoxTemplates TItem="ListBoxItem">
-                    <ItemTemplate>
-                        <div class="list-wrapper">
-                            <span class="text"><b>@context.Title</b></span>
-                            <span class="text">@context.Count.ToString("N0") posts</span>
+            <SfListView DataSource="users" Width="100%">
+                <ListViewFieldSettings TValue="ListItem" Id="Title" Text="Title"></ListViewFieldSettings>
+                <ListViewTemplates TValue="ListItem">
+                    <Template>
+                        <div class="e-list-wrapper e-list-multiline">
+                            <span class="e-list-content">@context.Title</span>
                         </div>
-                    </ItemTemplate>
-                </ListBoxTemplates>
-            </SfListBox>
+                    </Template>
+                </ListViewTemplates>
+            </SfListView>
         </div>
     </div>
 </div>
 <style>
+    .e-listview:not(.e-list-template) .e-list-item{
+        height:  auto;
+        }
     .e-listbox-container {
         margin: auto;
         max-width: 400px;
         box-sizing: border-box;
     }
-
+    .e-list-item{
+        height: 100px;
+        }
+    .e-list-wrapper{
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+        }
     .list-wrapper {
         height: inherit;
         position: relative;
         padding: 14px 12px 14px 78px;
     }
 
+    .e-list-content{
+        word-wrap: normal;
+        padding-bottom: 5px;
+        }
     .list-wrapper .text,
     .list-wrapper .description {
         display: block;

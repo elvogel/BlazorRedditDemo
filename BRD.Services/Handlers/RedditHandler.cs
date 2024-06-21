@@ -1,10 +1,3 @@
-using System.Net.Http.Headers;
-using System.Text;
-using BRD.Common;
-using Microsoft.Extensions.Caching.Memory;
-using Newtonsoft.Json;
-using Serilog;
-
 namespace BRD.Services.Handlers;
 
 public class RedditHandler : DelegatingHandler
@@ -35,11 +28,13 @@ public class RedditHandler : DelegatingHandler
 
         return await base.SendAsync(request, cancellationToken);
     }
-    private readonly ILogger log;
-    private readonly IMemoryCache cache;
-    public RedditHandler(ILogger logger, IMemoryCache memoryCache)
+    //private readonly ILogger log;
+    //private readonly IMemoryCache cache;
+
+    /// <inheritdoc />
+    public RedditHandler(/*ILogger logger, IMemoryCache memoryCache*/)
     {
-        log = logger;
-        cache = memoryCache;
+        //log = logger;
+        //cache = memoryCache;
     }
 }

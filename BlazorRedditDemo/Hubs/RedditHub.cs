@@ -13,9 +13,10 @@ public class RedditHub : Hub
 {
     public override async Task OnConnectedAsync()
     {
-        log.Debug("Connected to RedditHub");
         await base.OnConnectedAsync();
+        log.Debug("running stats from connection");
         await runStats();
+        await Clients.All.SendAsync("ReceiveMessage", stats);
         timer.Start();
     }
 
@@ -23,8 +24,10 @@ public class RedditHub : Hub
     private readonly ILogger log;
     private readonly RedditStats stats;
     private readonly HttpClient client;
-    public RedditHub(ILogger logger, IHttpClientFactory clientFactory)
+    private readonly IHubContext<RedditHub> context;
+    public RedditHub(ILogger logger, IHttpClientFactory clientFactory, IHubContext<RedditHub> hubContext)
     {
+        context = hubContext;
         timer = new System.Timers.Timer(8000);
         timer.Elapsed += TimerOnElapsed;
         log = logger;
@@ -35,8 +38,15 @@ public class RedditHub : Hub
     private void TimerOnElapsed(object? sender, ElapsedEventArgs e)
     {
         _ = runStats().ConfigureAwait(true);
-
-        Clients.All.SendAsync("TimerEvent", stats);
+        try
+        {
+            context.Clients.All.SendAsync("ReceiveMessage", stats);
+        }
+        catch (Exception ex)
+        {
+            log.Debug("{Ex} in timer event: {Msg}",
+                ex.GetType(),ex.Message);
+        }
     }
 
     private async Task runStats()
@@ -52,9 +62,10 @@ public class RedditHub : Hub
 
         var top10 = list.OrderByDescending(x => x.data.ups).Take(10).ToList();
         stats.Posts.Clear();
+        stats.Users.Clear();
         foreach (var post in top10)
         {
-            stats.Posts.Add(post.data.name, post.data.ups);
+            stats.Posts.Add(post.data.title, post.data.ups);
         }
 
         foreach (var post in list)
